@@ -21,6 +21,8 @@ TARGET_BOOTLOADER_BOARD_NAME := zerofltetmo
 TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := exynos7
 
+TARGET_RECOVERY_FSTAB := device/samsung/zerofltetmo/recovery.fstab
+
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --second_offset 0x10f00000 --tags_offset 0x00000100
