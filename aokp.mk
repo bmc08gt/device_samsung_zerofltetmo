@@ -1,6 +1,9 @@
 # Initialise device config
 $(call inherit-product, device/samsung/zerofltetmo/full_zerofltetmo.mk)
 
+TARGET_SCREEN_HEIGHT := 2560
+TARGET_SCREEN_WIDTH := 1440
+
 # Inherit AOKP common Phone stuff.
 $(call inherit-product, vendor/aokp/configs/common.mk)
 
