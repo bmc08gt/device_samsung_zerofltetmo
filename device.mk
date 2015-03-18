@@ -17,5 +17,16 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
+PRODUCT_PACKAGES += \
+    fstab.samsungexynos7420 \
+    init.baseband.rc \
+    init.carrier.rc \
+    init.gps.rc \
+    init.samsungexynos7420.rc \
+    init.samsungexynos7420.usb.rc \
+    init.wifi.rc \
+    init.zygote64_32.rc \
+    ueventd.samsungexynos7420.rc
+
 PRODUCT_NAME := full_zerofltetmo
 PRODUCT_DEVICE := zerofltetmo
