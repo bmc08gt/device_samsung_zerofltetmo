@@ -127,4 +127,3 @@
 
 # Reactivation lock
 /dev/block/platform/15570000.ufs/by-name/STEADY    0660    system    system
-

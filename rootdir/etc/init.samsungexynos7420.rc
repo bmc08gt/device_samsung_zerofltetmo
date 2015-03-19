@@ -2,6 +2,8 @@ import init.samsungexynos7420.usb.rc
 import init.wifi.rc
 import init.baseband.rc
 import init.carrier.rc
+import init.fac.rc
+import init.zeroflte_fac.rc
 
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
@@ -158,10 +160,14 @@ on boot
 #    write /proc/sys/vm/min_free_kbytes 32768
 #    write /proc/sys/vm/min_free_order_shift 1
 
+    #setprop ro.radio.noril yes
+
+    # IPSec for VOLTE
+    chown root system /dev/socket
+    chmod 0775 /dev/socket
+
     # Allow to access debugfs
     chmod 755 /sys/kernel/debug
-
-    #setprop ro.radio.noril yes
 
     # Set up kernel tracing, but disable it by default
     chmod 0222 /sys/kernel/debug/tracing/trace_marker
@@ -432,10 +438,9 @@ on boot
 # SSWAP
     write /proc/sys/vm/swappiness 130
 
-#Private Mode
-service privatemode /system/bin/sdcard -r /data/privatemode /mnt/shell/privatemode 1000 1000
-    class late_start
-    oneshot
+    # FM Radio
+    chmod 0640 /dev/fmradio
+    chown system system /dev/fmradio
 
 on fs
     mount_all /fstab.samsungexynos7420
@@ -501,21 +506,17 @@ on fs
     chown system system /sys/class/backlight/panel/brightness
     chown system system /sys/class/backlight/panel/auto_brightness
 
-# Permissions for LCD
-    chown system radio /sys/class/lcd/panel/manufacture_code
-    chown system radio /sys/class/lcd/panel/lcd_type
-    chown system system /sys/class/lcd/panel/siop_enable
-    chown system system /sys/class/lcd/panel/temperature
-    chown system radio /sys/class/lcd/panel/mcd_mode
-    chown system system /sys/class/backlight/panel/weakness_hbm_comp	
-
 # Permissions for LCD HMT
     chown system system /sys/class/lcd/panel/hmt_on
     chown system system /sys/class/lcd/panel/hmt_bright
     chown system system /sys/class/mdnie/mdnie/hmt_color_temperature
 
-# Permissions for LCD ALPM
-    chown system system /sys/class/lcd/panel/alpm
+# Permissions for LCD
+    chown system radio /sys/class/lcd/panel/manufacture_code
+    chown system radio /sys/class/lcd/panel/lcd_type
+    chown system system /sys/class/lcd/panel/siop_enable
+    chown system system /sys/class/lcd/panel/temperature
+    chown system system /sys/class/backlight/panel/weakness_hbm_comp
 
 # Permissions for MDNIE
     chown system media_rw /sys/class/mdnie/mdnie/mode
@@ -702,13 +703,14 @@ on fs
 # Permission for DRM Key
     chmod 0644 /factory/wv.keys
 
-# ARGOSD network_throughput
+#ARGOSD network_throughput
     chown system system /dev/network_throughput
 
-# emergency firmware update
-on firmware
-    mount_all /fstab.samsungexynos7420.fwup
-    class_start firmware_update
+# DIAG
+service DIAG-daemon /system/bin/diagexe
+    class main
+    user root
+    group system radio inet net_raw
 
 # ARGOSD
 service argos-daemon /system/bin/argosd
@@ -716,11 +718,21 @@ service argos-daemon /system/bin/argosd
     user system
     group system radio
 
+# emergency firmware update
+on firmware
+    mount_all /fstab.samsungexynos7420.fwup
+    class_start firmware_update
+
 service prepare_param /system/bin/prepare_param.sh /dev/block/platform/15570000.ufs/by-name/PARAM
     class core
     user root
     group root
     seclabel u:r:prepare_param:s0
+    oneshot
+
+#Private Mode
+service privatemode /system/bin/sdcard -r /data/privatemode /mnt/shell/privatemode 1000 1000
+    class late_start
     oneshot
 
 # SENSOR FRAMEWORK : starts fingerprintService
@@ -796,6 +808,20 @@ on property:sys.boot_completed=1
     write /proc/sys/vm/dirty_bytes 62914560
     write /proc/sys/vm/dirty_background_bytes 20971520
 
+#
+# start netmgrd
+#
+on property:ro.use_data_netmgrd=true
+    start netmgrd
+
+#
+# start multiple rilds based on multisim property
+#
+on property:ro.multisim.simslotcount=2
+    stop ril-daemon
+    start ril-daemon
+    start ril-daemon1
+
 # LPM
 on property:ro.bootmode=charger
     mount ext4 /dev/block/platform/15570000.ufs/by-name/SYSTEM /system support_scfs wait ro
@@ -816,22 +842,12 @@ service fwup /sbin/ffu -a
     oneshot
 
 # SecEDS
-
 service TvoutService_C /system/bin/bintvoutservice
     class main
     user system
     group graphics
 on property:ro.SecEDS.enable=false
     stop TvoutService_C
-
-# DRK/CS service
-service cs_service /system/bin/cs
-    class main
-    user system
-    group system
-    disabled
-on property:sys.mobicoredaemon.enable=true
-    start cs_service
 
 # Secure Storage startup
 service secure_storage /system/bin/secure_storage_daemon
@@ -867,6 +883,15 @@ on property:persist.sys.storage_preload=1
 on property:persist.sys.storage_preload=0
     start umount_service
 
+# DRK/CS service
+service cs_service /system/bin/cs
+    class main
+    user system
+    group system
+    disabled
+on property:sys.mobicoredaemon.enable=true
+    start cs_service
+
 # SSWAP
 service swapon /sbin/sswap -s
     class core
@@ -874,6 +899,13 @@ service swapon /sbin/sswap -s
     group root
     seclabel u:r:sswap:s0
     oneshot
+
+# IPSec for VOLTE
+service ipsec-daemon /system/bin/IPSecService
+    class main
+    socket ipsec_socket stream 660 system system
+    user system
+    group system net_raw inet net_admin
 
 # RTC logging daemon
 service rtc_log /system/bin/rtc_log.sh
@@ -896,15 +928,3 @@ on property:sys.boot_completed=1
 
 on property:security.semdaemonfinish=1
     stop sem_daemon
-
-# IPSec for VOLTE
-    chown root system /dev/socket
-    chmod 0775 /dev/socket
-
-# IPSec for VOLTE
-service ipsec-daemon /system/bin/IPSecService
-    class main
-    socket ipsec_socket stream 660 system system
-    user system
-    group system net_raw inet net_admin
-

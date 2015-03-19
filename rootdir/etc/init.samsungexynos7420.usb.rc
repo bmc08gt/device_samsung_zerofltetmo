@@ -291,4 +291,3 @@ on property:sys.usb.config=mtp,conn_gadget,adb
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 
-
