@@ -15,7 +15,8 @@ else
 endif
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_KERNEL):kernel
+    $(LOCAL_KERNEL):kernel \
+    device/samsung/zerofltetmo/dt.img:dt.img
 
 PRODUCT_PACKAGES += \
     fstab.samsungexynos7420 \
