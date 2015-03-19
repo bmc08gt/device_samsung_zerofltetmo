@@ -42,7 +42,7 @@ TARGET_BOARD_PLATFORM := exynos7
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
-TARGET_RECOVERY_FSTAB := device/samsung/zerofltetmo/recovery.fstab
+TARGET_RECOVERY_FSTAB := device/samsung/zerofltetmo/rootdir/etc/fstab.samsungexynos7420
 TARGET_OTA_ASSERT_DEVICE := zerofltetmo
 
 # inherit from the proprietary version
