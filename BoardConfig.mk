@@ -39,3 +39,5 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 TARGET_PREBUILT_KERNEL := device/samsung/zerofltetmo/kernel
 
 BOARD_HAS_NO_SELECT_BUTTON := true
+
+USE_OPENGL_RENDERER := true
