@@ -1,4 +1,4 @@
-USE_CAMERA_STUB := true
+LOCAL_PATH := device/samsung/zerofltetmo
 
 # Architecture
 TARGET_ARCH := arm64
@@ -19,13 +19,19 @@ TARGET_2ND_CPU_VARIANT := generic
 TARGET_BOOTLOADER_BOARD_NAME := universal7420
 TARGET_NO_BOOTLOADER := true
 
+# Camera
+USE_CAMERA_STUB := true
+
 # Kernel
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --second_offset 0x10f00000 --tags_offset 0x00000100
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
-TARGET_PREBUILT_KERNEL := device/samsung/zerofltetmo/kernel
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
+
+# NFC
+BOARD_NFC_HAL_SUFFIX := universal7420
 
 # Partitions
 TARGET_USERIMAGES_USE_EXt4 := true
@@ -37,6 +43,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x64ccccccc
 
 # OpenGL
 USE_OPENGL_RENDERER := true
+BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
 
 # Platform
 TARGET_BOARD_PLATFORM := exynos5
@@ -45,7 +52,7 @@ TARGET_BOARD_PLATFORM := exynos5
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
-TARGET_RECOVERY_FSTAB := device/samsung/zerofltetmo/rootdir/etc/fstab.samsungexynos7420
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.samsungexynos7420
 TARGET_OTA_ASSERT_DEVICE := zerofltetmo
 
 # inherit from the proprietary version
