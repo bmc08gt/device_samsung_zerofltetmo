@@ -46,7 +46,7 @@ USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
 
 # Platform
-TARGET_BOARD_PLATFORM := exynos5
+TARGET_BOARD_PLATFORM := unknown # exynos5
 
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
