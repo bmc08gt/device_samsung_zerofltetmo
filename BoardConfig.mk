@@ -55,5 +55,8 @@ BOARD_HAS_NO_MISC_PARTITION := true
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.samsungexynos7420
 TARGET_OTA_ASSERT_DEVICE := zerofltetmo
 
+# Twrp
+-include device/samsung/zerofltetmo/twrp.mk
+
 # inherit from the proprietary version
 -include vendor/samsung/zerofltetmo/BoardConfigVendor.mk
