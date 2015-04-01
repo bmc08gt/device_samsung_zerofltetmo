@@ -37,4 +37,4 @@ PRODUCT_NAME := full_zerfltetmo
 PRODUCT_DEVICE := zerofltetmo
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := Samsung
-PRODUCT_MODEL := Galaxy S6
+PRODUCT_MODEL := SM-G920T
