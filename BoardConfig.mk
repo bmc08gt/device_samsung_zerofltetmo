@@ -24,7 +24,7 @@
 include device/samsung/zeroflte-gsm/BoardConfigCommon.mk
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := zerofltetmo
+TARGET_OTA_ASSERT_DEVICE := zerofltetmo,zeroflte
 
 # Kernel
 #TARGET_KERNEL_SOURCE := kernel/samsung/zerofltetmo
