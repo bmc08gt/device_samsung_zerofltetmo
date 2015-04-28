@@ -22,3 +22,13 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/zerofltetmo/overlay
 
 # Inherit from zeroflte-common
 $(call inherit-product, device/samsung/zeroflte-common/zeroflte.mk)
+
+# Kernel
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+    LOCAL_KERNEL := device/samsung/zerofltetmo/kernel
+else
+    LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
+PRODUCT_COPY_FILES += \
+    device/samsung/zerofltetmo/dt.img:dt.img
