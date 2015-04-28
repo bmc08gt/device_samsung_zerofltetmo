@@ -31,4 +31,5 @@ else
 endif
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_KERNEL):kernel \
     device/samsung/zerofltetmo/dt.img:dt.img
