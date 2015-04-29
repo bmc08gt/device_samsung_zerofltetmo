@@ -2,7 +2,7 @@
 vendor/firmware/bcm4358A3_V0028.0044.hcd
 
 # Mobicore
-app/mcRegistry/08880000000000000000000000000000.tlbin:vendor/firmware/mcRegistry/08880000000000000000000000000000.tlbin
+app/mcRegistry/08880000000000000000000000000000.tlbin
 
 # Radio
 lib/libril.so
