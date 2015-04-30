@@ -1,5 +1,5 @@
 # Bluetooth
-vendor/firmware/bcm4358A3_V0028.0044.hcd
+vendor/firmware/bcm4358A3_V0031.0048.hcd
 
 # Mobicore
 app/mcRegistry/08880000000000000000000000000000.tlbin
