@@ -27,4 +27,5 @@ include device/samsung/zero-common/BoardConfigCommon.mk
 TARGET_OTA_ASSERT_DEVICE := zerofltetmo,zeroflte
 
 # Kernel
+BOARD_CUSTOM_BOOTIMG_MK := device/samsung/zerofltetmo/mkbootimg.mk
 TARGET_KERNEL_CONFIG := exynos7420-zeroflte_tmo_defconfig
